@@ -1,0 +1,249 @@
+$theme-font: "Gotham Rounded";
+$theme-colour: #7eb851;
+
+$body-blur-time: 0.2s;
+$how-to-use-time: 0.4s;
+
+@font-face {
+	font-family: $theme-font;
+	src: url(./assets/fonts/gotham-rounded/gotham-rounded-light.otf);
+}
+
+@font-face {
+	font-family: $theme-font;
+	src: url(./assets/fonts/gotham-rounded/gotham-rounded-bold.otf);
+	font-weight: bold;
+}
+
+body, button, textarea {
+	font-family: $theme-font;
+	user-select: none;
+	outline: none;
+}
+
+button {
+	font-weight: bold;
+}
+
+input {
+	outline: none;
+}
+
+h1, p {
+	margin: 0;
+	padding: 0;
+}
+
+.app {
+	background: #addccb;
+	height: 100vh;
+}
+
+.header, .body {
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+}
+
+.header {
+	z-index: 1;
+
+	height: 10vh;
+	background: $theme-colour;
+	color: white;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+
+	padding: 1vh 2.5vw;
+
+	h1 {
+		font-size: 3vh;
+	}
+
+	p {
+		font-size: 1.5vh;
+	}
+
+	button {
+		background: unset;
+		border: none;
+	}
+
+	img {
+		width: 8vw;
+	}
+}
+
+textarea {
+	resize: none;
+	height: 20vh;
+	font-size: 20px;
+
+	font-family: $theme-font;
+}
+
+textarea, input, .textbox {
+	border: 6px solid $theme-colour;
+	color: $theme-colour;
+	border-radius: 20px;
+
+	width: 100%;
+	box-sizing: border-box;
+
+	padding: 1vh 2vw;
+
+	background: white;
+}
+
+label, .label {
+	font-weight: bold;
+	display: block;
+	margin: 1vh 0;
+}
+
+input {
+	font-size: 30px;
+	padding: 1vh 0;
+	margin: 1vh 0;
+	text-align: center;
+
+	font-weight: bold;
+}
+
+.textbox {
+	margin: 1vh 0;
+}
+
+.body {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+
+	width: 96vw;
+
+	padding: 0 2vw;
+
+	background: #f9f9f9;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+
+	color: $theme-colour;
+
+	transition: $body-blur-time;
+
+	.input-group {
+		margin: 5vh 0;
+	}
+
+	
+	.drag-handler {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		height: 20px;
+
+		&::before {
+			display: block;
+			content: " ";
+			background: $theme-colour;
+			width: 25%;
+			height: 4px;
+			border-radius: 2px;
+		}
+	}
+
+	.flex-centre {
+		display: flex;
+		justify-content: center;
+	}
+
+	.btn-convert {
+		background: $theme-colour;
+		border-radius: 20px;
+		font-size: 3vh;
+		color: white;
+		border: none;
+
+		font-weight: bold;
+
+		padding: 2vh 6vw;
+	}
+}
+
+.blurred {
+	filter: blur(3px);
+}
+
+.start-page > .body {
+	height: 80vh;
+}
+
+.footer {
+	position: fixed;
+	bottom: 2vh;
+	left: 0;
+	right: 0;
+	margin: auto;
+
+	text-align: center;
+	color: $theme-colour;
+
+	transition: $body-blur-time;
+}
+
+.how-to-use-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,0.1);
+}
+
+.how-to-use-modal {
+	z-index: 1;
+
+	position: fixed;
+	top: 0;
+	bottom: -200vh;
+	margin: auto;
+
+	width: 96vw;
+	height: fit-content;
+	background: white;
+
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+
+	padding: 1vh 2vw;
+
+	border-radius: 20px;
+
+	transition: $how-to-use-time;
+
+	h1 {
+		font-size: 3vh;
+		color: $theme-colour;
+	}
+
+	.textbox {
+		font-size: 2vh;
+	}
+
+	p {
+		margin: 8px 0;
+	}
+
+	&.visible {
+		top: 0;
+		bottom: 0;
+	}
+
+	code {
+		background: #f0f0f0;
+		border-radius: 4px;
+		padding: 2px;
+	}
+}
