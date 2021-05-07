@@ -35,7 +35,7 @@ h1, p {
 }
 
 .app {
-	background: #addccb;
+	background: #daedbb;
 	height: 100vh;
 }
 
@@ -44,6 +44,10 @@ h1, p {
 }
 
 .header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	
 	z-index: 1;
 
 	height: 10vh;
@@ -55,6 +59,7 @@ h1, p {
 	align-items: flex-end;
 
 	padding: 1vh 2.5vw;
+	width: calc(100% - 5vw);
 
 	h1 {
 		font-size: 3vh;
@@ -65,7 +70,7 @@ h1, p {
 	}
 
 	button {
-		background: unset;
+		background: inherit;
 		border: none;
 	}
 
@@ -114,6 +119,29 @@ input {
 	margin: 1vh 0;
 }
 
+@mixin dead-centre {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+}
+
+.under-body {
+	position: fixed;
+
+	& > .bg {
+		@include dead-centre;
+		width: 90%;
+	}
+
+	& > .panda {
+		@include dead-centre;
+		height: 35vh;
+	}
+}
+
 .body {
 	position: fixed;
 	bottom: 0;
@@ -131,10 +159,13 @@ input {
 
 	transition: $body-blur-time;
 
+	&.show-panda {
+		bottom: -70vh;
+	}
+
 	.input-group {
 		margin: 5vh 0;
 	}
-
 	
 	.drag-handler {
 		position: relative;
@@ -180,6 +211,27 @@ input {
 	height: 80vh;
 }
 
+.background-overlay {
+	background: rgba(0, 0, 0, 0.25);
+	color: white;
+
+	position: absolute;
+	top: 12vh;
+	left: 0;
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 10vh;
+
+	transition: 0.2s;
+
+	&.hidden {
+		opacity: 0;
+	}
+}
+
 .footer {
 	position: fixed;
 	bottom: 2vh;
@@ -191,6 +243,12 @@ input {
 	color: $theme-colour;
 
 	transition: $body-blur-time;
+
+	pointer-events: none;
+
+	&.hidden {
+		opacity: 0;
+	}
 }
 
 .how-to-use-overlay {

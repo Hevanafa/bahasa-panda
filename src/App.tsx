@@ -14,6 +14,9 @@ interface IState {
 
 	blurBody: boolean;
 	showHowToUse: boolean;
+
+	hasSeenPanda: boolean;
+	isPandaVisible: boolean;
 }
 
 export default class App extends React.Component<{}, IState> {
@@ -26,6 +29,9 @@ export default class App extends React.Component<{}, IState> {
 
 		blurBody: false,
 		showHowToUse: false,
+
+		hasSeenPanda: false,
+		isPandaVisible: false,
 	}
 
 	constructor(props: any) {
@@ -36,6 +42,10 @@ export default class App extends React.Component<{}, IState> {
 
 		this.showHowToUse = this.showHowToUse.bind(this);
 		this.hideHowToUse = this.hideHowToUse.bind(this);
+
+		this.showPanda = this.showPanda.bind(this);
+		this.hidePanda = this.hidePanda.bind(this);
+		this.toggleShowPanda = this.toggleShowPanda.bind(this);
 	}
 
 	handleTextareaChange(event: any) {
@@ -43,11 +53,6 @@ export default class App extends React.Component<{}, IState> {
 	}
 
 	handleShiftChange(event: any) {
-		// let parsedVal = Number(event.target.value);
-
-		// if (isNaN(parsedVal))
-		// 	parsedVal = 0;
-
 		this.setState({ shift: event.target.value });
 	}
 
@@ -109,17 +114,58 @@ export default class App extends React.Component<{}, IState> {
 		});
 	}
 
+	showPanda() {
+		this.setState({
+			hasSeenPanda: true,
+			isPandaVisible: true
+		});
+	}
+
+	hidePanda() {
+		this.setState({ isPandaVisible: false });
+	}
+
+	toggleShowPanda() {
+		this.setState({
+			hasSeenPanda: true,
+			isPandaVisible: !this.state.isPandaVisible
+		});
+	}
+
 	render() {
 		return (
 			<div className="app">
 				<div className="start-page">
+					<div className="under-body">
+						<img className="bg"
+							src="/assets/img/background-img.png"
+							alt="background" />
+						<img className="panda"
+							src="/assets/img/panda-boy.png"
+							alt="Panda Boy" />
+					</div>
+
+					<div className={
+						"background-overlay" +
+						(this.state.isPandaVisible || this.state.hasSeenPanda ? " hidden" : "")
+					}
+						onClick={this.showPanda}
+					>
+						Sentuh untuk melihat rahasia.
+					</div>
+
 					<Header showHowToUse={this.showHowToUse} />
 
-					<div className={"body" + (this.state.blurBody ? " blurred" : "")}>
+					<div className={
+						"body" +
+						(this.state.blurBody ? " blurred" : "") +
+						(this.state.isPandaVisible ? " show-panda" : "")
+					}>
 						{
 							this.state.showConvertedResult ?
 								<>
-									<div className="drag-handler"></div>
+									<div className="drag-handler"
+										onClick={this.toggleShowPanda} />
 
 									<div className="input-group">
 										<div className="label">Kalimat yang dimasukkan</div>
@@ -144,7 +190,8 @@ export default class App extends React.Component<{}, IState> {
 								</>
 								:
 								<>
-									<div className="drag-handler"></div>
+									<div className="drag-handler"
+										onClick={this.toggleShowPanda} />
 
 									<div className="input-group">
 										<label htmlFor="input">Kalimat yang ingin diacak</label>
@@ -164,26 +211,33 @@ export default class App extends React.Component<{}, IState> {
 											min="-25"
 											max="25" />
 									</div>
-
+ 
 									<div className="flex-centre">
 										<button className="btn-convert"
 											onClick={this.convertText.bind(this)}>
 											Konversi
-									</button>
+										</button>
 									</div>
 								</>
 						}
+					</div>
+
+
+					<div className={
+						"footer" +
+						(this.state.blurBody ? " blurred" : "") +
+						(this.state.isPandaVisible ? " hidden" : "")
+					}>
+						Graphics Design: T3CH_Kitsune<br />
+						Programming: Hevanafa<br />
+						Panda by Hevanafa<br />
+						May 2021, T3CH_Kitsu &amp; Hevanafa
 					</div>
 
 					<HowToUseModal
 						hideHowToUse={this.hideHowToUse}
 						showHowToUse={this.state.showHowToUse} />
 
-					<div className={"footer" + (this.state.blurBody ? " blurred" : "")}>
-						Graphics Design: T3CH_Kitsune<br />
-						Programming: Hevanafa<br />
-						May 2021, T3CH_Kitsu &amp; Hevanafa
-					</div>
 				</div>
 			</div>
 		);
