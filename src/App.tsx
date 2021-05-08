@@ -133,13 +133,47 @@ export default class App extends React.Component<{}, IState> {
 		this.setState({
 			hasSeenPanda: true,
 			isPandaVisible: !this.state.isPandaVisible
+		}, () => {
+			this.saveConfig();
 		});
 	}
 
 	toggleDarkMode() {
 		this.setState({
 			isDarkMode: !this.state.isDarkMode
+		}, () => {
+			this.saveConfig();
 		});
+	}
+
+	readonly localStorageConfigKey = "bahasaPandaConfig";
+
+	componentDidMount() {
+		this.loadConfig();
+	}
+
+	loadConfig() {
+		const savedConfig = localStorage.getItem(this.localStorageConfigKey);
+
+		if (savedConfig) {
+			try {
+				this.setState({...JSON.parse(savedConfig)});
+			} catch {
+				localStorage.removeItem(this.localStorageConfigKey);
+			}
+		}
+	}
+
+	saveConfig() {
+		const saveData = {
+			hasSeenPanda: this.state.hasSeenPanda,
+			isDarkMode: this.state.isDarkMode
+		};
+
+		localStorage.setItem(
+			this.localStorageConfigKey,
+			JSON.stringify(saveData)
+		);
 	}
 
 	render() {
