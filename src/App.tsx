@@ -158,7 +158,7 @@ export default class App extends React.Component<{}, IState> {
 	}
 
 	handleDecryptionChange(event: any) {
-		console.error("hDC checked", event.target.checked);
+		// console.error("hDC checked", event.target.checked);
 
 		this.setState({
 			doDecryption: event.target.checked
@@ -314,7 +314,7 @@ export default class App extends React.Component<{}, IState> {
 						(this.state.blurBody ? " blurred" : "") +
 						(this.state.isPandaVisible ? " hidden" : "")
 					}>
-						Graphics Design: T3CH_Kitsune<br />
+						Graphics Design: T3CH_Kitsu<br />
 						Programming: Hevanafa<br />
 						Panda by Hevanafa<br />
 						May 2021, T3CH_Kitsu &amp; Hevanafa
