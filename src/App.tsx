@@ -18,6 +18,8 @@ interface IState {
 
 	hasSeenPanda: boolean;
 	isPandaVisible: boolean;
+
+	doDecryption: boolean;
 }
 
 export default class App extends React.Component<{}, IState> {
@@ -34,6 +36,8 @@ export default class App extends React.Component<{}, IState> {
 
 		hasSeenPanda: false,
 		isPandaVisible: false,
+
+		doDecryption: false,
 	}
 
 	constructor(props: any) {
@@ -50,6 +54,8 @@ export default class App extends React.Component<{}, IState> {
 		this.toggleShowPanda = this.toggleShowPanda.bind(this);
 
 		this.toggleDarkMode = this.toggleDarkMode.bind(this);
+
+		this.handleDecryptionChange = this.handleDecryptionChange.bind(this);
 	}
 
 	handleTextareaChange(event: any) {
@@ -57,13 +63,15 @@ export default class App extends React.Component<{}, IState> {
 	}
 
 	handleShiftChange(event: any) {
-		this.setState({ shift: event.target.value });
+		if (event.target.value < 0)
+			this.setState({ shift: "0" });
+		else this.setState({ shift: event.target.value });
 	}
 
 	convertText() {
 		const { inputText: inputValue, shift } = this.state;
 		const inputText = inputValue.trim();
-		const shiftVal = +shift;
+		let shiftVal = +shift;
 
 		if (!inputValue.trim().length) {
 			alert("Kolom input tidak boleh kosong!");
@@ -74,6 +82,9 @@ export default class App extends React.Component<{}, IState> {
 			alert("Geser harus berupa bilangan!");
 			return;
 		}
+
+		if (this.state.doDecryption)
+			shiftVal *= -1;
 
 		var cOrd: number;
 
@@ -146,6 +157,12 @@ export default class App extends React.Component<{}, IState> {
 		});
 	}
 
+	handleDecryptionChange(event: any) {
+		this.setState({
+			doDecryption: event.target.value
+		});
+	}
+
 	readonly localStorageConfigKey = "bahasaPandaConfig";
 
 	componentDidMount() {
@@ -157,7 +174,7 @@ export default class App extends React.Component<{}, IState> {
 
 		if (savedConfig) {
 			try {
-				this.setState({...JSON.parse(savedConfig)});
+				this.setState({ ...JSON.parse(savedConfig) });
 			} catch {
 				localStorage.removeItem(this.localStorageConfigKey);
 			}
@@ -178,7 +195,7 @@ export default class App extends React.Component<{}, IState> {
 
 	render() {
 		return (
-			<div className={"app" + 
+			<div className={"app" +
 				(this.state.isDarkMode ? " dark-mode" : "")
 			}>
 				<div className="start-page">
@@ -204,7 +221,7 @@ export default class App extends React.Component<{}, IState> {
 						showHowToUse={this.showHowToUse}
 						isDarkMode={this.state.isDarkMode}
 						toggleDarkMode={this.toggleDarkMode}
-						/>
+					/>
 
 					<div className={
 						"body" +
@@ -226,7 +243,7 @@ export default class App extends React.Component<{}, IState> {
 									</div>
 
 									<div className="input-group">
-										<div className="label">Hasil (Geser {Number(this.state.shift)})</div>
+										<div className="label">Hasil (Geser { Number(this.state.shift) }{ this.state.doDecryption ? " dekripsi" : ""})</div>
 										<div className="textbox">
 											{this.state.convertedText}
 										</div>
@@ -254,15 +271,31 @@ export default class App extends React.Component<{}, IState> {
 									</div>
 
 									<div className="input-group">
-										<label htmlFor="shift">Geser Huruf</label>
+										<div>
+											<div>
+												<label htmlFor="shift">Geser Huruf</label>
+											</div>
+
+											<div className="right-group">
+												<input id="decryption"
+														type="checkbox"
+														defaultChecked={this.state.doDecryption}
+														onChange={this.handleDecryptionChange}
+													/>
+												<label htmlFor="decryption">
+													Dekripsi
+												</label>
+											</div>
+										</div>
 										<input type="number"
+											id="shift"
 											value={this.state.shift}
 											onChange={this.handleShiftChange}
-											pattern="-?\d+"
-											min="-25"
+											pattern="\d+"
+											min="0"
 											max="25" />
 									</div>
- 
+
 									<div className="flex-centre">
 										<button className="btn-convert"
 											onClick={this.convertText.bind(this)}>

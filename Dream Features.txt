@@ -1,0 +1,6 @@
+Dream Features
+- Alternating shift every odd/even index: 1, -1, 1, -1
+- Keyboard letter shift: A-S, S-D, D-F, etc., for the edge letters, wrap to the front: P-Q, L-A, M-Z
+- Explicit encrypt/decrypt button, basically the same as encryption but shift (geser) times minus 1
+- A list of possible sentences with each shift
+- actually working draggable slider

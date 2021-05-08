@@ -169,6 +169,22 @@ input {
 
 	.input-group {
 		margin: 5vh 0;
+
+		& > div {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			input[type="checkbox"] {
+				width: 20px;
+				height: 20px;
+				margin-right: 5px;
+			}
+
+			& > .right-group {
+				display: flex;
+			}
+		}
 	}
 	
 	.drag-handler {
