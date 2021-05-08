@@ -12,6 +12,7 @@ interface IState {
 	showConvertedResult: boolean;
 	convertedText: string;
 
+	isDarkMode: boolean;
 	blurBody: boolean;
 	showHowToUse: boolean;
 
@@ -27,6 +28,7 @@ export default class App extends React.Component<{}, IState> {
 		showConvertedResult: false,
 		convertedText: "",
 
+		isDarkMode: false,
 		blurBody: false,
 		showHowToUse: false,
 
@@ -46,6 +48,8 @@ export default class App extends React.Component<{}, IState> {
 		this.showPanda = this.showPanda.bind(this);
 		this.hidePanda = this.hidePanda.bind(this);
 		this.toggleShowPanda = this.toggleShowPanda.bind(this);
+
+		this.toggleDarkMode = this.toggleDarkMode.bind(this);
 	}
 
 	handleTextareaChange(event: any) {
@@ -132,16 +136,24 @@ export default class App extends React.Component<{}, IState> {
 		});
 	}
 
+	toggleDarkMode() {
+		this.setState({
+			isDarkMode: !this.state.isDarkMode
+		});
+	}
+
 	render() {
 		return (
-			<div className="app">
+			<div className={"app" + 
+				(this.state.isDarkMode ? " dark-mode" : "")
+			}>
 				<div className="start-page">
 					<div className="under-body">
 						<img className="bg"
-							src="/assets/img/background-img.png"
+							src="./assets/img/background-img.png"
 							alt="background" />
 						<img className="panda"
-							src="/assets/img/panda-boy.png"
+							src="./assets/img/panda-boy.png"
 							alt="Panda Boy" />
 					</div>
 
@@ -154,12 +166,17 @@ export default class App extends React.Component<{}, IState> {
 						Sentuh untuk melihat rahasia.
 					</div>
 
-					<Header showHowToUse={this.showHowToUse} />
+					<Header
+						showHowToUse={this.showHowToUse}
+						isDarkMode={this.state.isDarkMode}
+						toggleDarkMode={this.toggleDarkMode}
+						/>
 
 					<div className={
 						"body" +
 						(this.state.blurBody ? " blurred" : "") +
-						(this.state.isPandaVisible ? " show-panda" : "")
+						(this.state.isPandaVisible ? " show-panda" : "") +
+						(this.state.isDarkMode ? " dark-mode" : "")
 					}>
 						{
 							this.state.showConvertedResult ?
