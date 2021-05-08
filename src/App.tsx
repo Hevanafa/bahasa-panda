@@ -158,8 +158,10 @@ export default class App extends React.Component<{}, IState> {
 	}
 
 	handleDecryptionChange(event: any) {
+		console.error("hDC checked", event.target.checked);
+
 		this.setState({
-			doDecryption: event.target.value
+			doDecryption: event.target.checked
 		});
 	}
 
