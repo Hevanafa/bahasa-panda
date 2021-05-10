@@ -4,12 +4,16 @@ import Header from "./components/Header";
 import HowToUseModal from "./components/HowToUseModal";
 
 import "./App.scss";
+import ConversionTable from "./components/ConversionTable";
+import ConversionResult from "./components/ConversionResult";
+import Footer from "./components/Footer";
+import ConversionStart from "./components/ConversionStart";
 
 interface IState {
 	inputText: string;
 	shift: string;
 
-	showConvertedResult: boolean;
+	isConversionResultVisible: boolean;
 	convertedText: string;
 
 	isDarkMode: boolean;
@@ -19,7 +23,8 @@ interface IState {
 	hasSeenPanda: boolean;
 	isPandaVisible: boolean;
 
-	doDecryption: boolean;
+	isDecryptionMode: boolean;
+	isConversionTableVisible: boolean;
 }
 
 export default class App extends React.Component<{}, IState> {
@@ -27,7 +32,7 @@ export default class App extends React.Component<{}, IState> {
 		inputText: "",
 		shift: "0",
 
-		showConvertedResult: false,
+		isConversionResultVisible: false,
 		convertedText: "",
 
 		isDarkMode: false,
@@ -37,12 +42,17 @@ export default class App extends React.Component<{}, IState> {
 		hasSeenPanda: false,
 		isPandaVisible: false,
 
-		doDecryption: false,
+		isDecryptionMode: false,
+		isConversionTableVisible: false,
 	}
 
 	constructor(props: any) {
 		super(props);
 
+		this.bindCommonFunctions();
+	}
+
+	bindCommonFunctions() {
 		this.handleTextareaChange = this.handleTextareaChange.bind(this);
 		this.handleShiftChange = this.handleShiftChange.bind(this);
 
@@ -83,34 +93,47 @@ export default class App extends React.Component<{}, IState> {
 			return;
 		}
 
-		if (this.state.doDecryption)
+		if (this.state.isDecryptionMode)
 			shiftVal *= -1;
 
-		var cOrd: number;
-
 		this.setState({
-			showConvertedResult: true,
-			convertedText: inputText.replace(/[a-z]/gi, match => {
-				// console.log(match + " " + shift);
-				// console.log((match.charCodeAt(0) - 97 + shift));
-
-				if (match.match(/[a-z]/)) {
-					for (cOrd = match.charCodeAt(0) - 97 + shiftVal; cOrd < 0; cOrd += 26);
-					cOrd %= 26;
-					return String.fromCharCode(cOrd + 97);
-				} else if (match.match(/[A-Z]/)) {
-					for (cOrd = match.charCodeAt(0) - 65 + shiftVal; cOrd < 0; cOrd += 26);
-					cOrd %= 26;
-					return String.fromCharCode(cOrd + 65);
-				}
-
-				return match;
-			})
+			isConversionResultVisible: true,
+			convertedText: this.getShiftedText(inputText, shiftVal)
 		});
 	}
 
+	getShiftedText(original: string, shift: number) {
+		var cOrd: number;
+
+		return original.replace(/[a-z]/gi, match => {
+			// console.log(match + " " + shift);
+			// console.log((match.charCodeAt(0) - 97 + shift));
+
+			if (match.match(/[a-z]/)) {
+				for (cOrd = match.charCodeAt(0) - 97 + shift; cOrd < 0; cOrd += 26);
+				cOrd %= 26;
+				return String.fromCharCode(cOrd + 97);
+			} else if (match.match(/[A-Z]/)) {
+				for (cOrd = match.charCodeAt(0) - 65 + shift; cOrd < 0; cOrd += 26);
+				cOrd %= 26;
+				return String.fromCharCode(cOrd + 65);
+			}
+
+			return match;
+		});
+	}
+
+	getShiftedTextArray(original: string) {
+		return [...new Array(26)].map((_, idx) =>
+			this.getShiftedText(original, idx)
+		);
+	}
+
 	backToStart() {
-		this.setState({ showConvertedResult: false });
+		this.setState({
+			isConversionResultVisible: false,
+			isConversionTableVisible: false,
+		});
 	}
 
 	showHowToUse() {
@@ -161,8 +184,16 @@ export default class App extends React.Component<{}, IState> {
 		// console.error("hDC checked", event.target.checked);
 
 		this.setState({
-			doDecryption: event.target.checked
+			isDecryptionMode: event.target.checked
 		});
+	}
+
+	showConversionTable() {
+		this.setState({ isConversionTableVisible: true });
+	}
+
+	hideConversionTable() {
+		this.setState({ isConversionTableVisible: false });
 	}
 
 	readonly localStorageConfigKey = "bahasaPandaConfig";
@@ -231,94 +262,42 @@ export default class App extends React.Component<{}, IState> {
 						(this.state.isPandaVisible ? " show-panda" : "") +
 						(this.state.isDarkMode ? " dark-mode" : "")
 					}>
+
 						{
-							this.state.showConvertedResult ?
-								<>
-									<div className="drag-handler"
-										onClick={this.toggleShowPanda} />
+							this.state.isConversionTableVisible ?
+								<ConversionTable
+									toggleShowPanda={this.toggleShowPanda}
+									backToStart={this.backToStart.bind(this)}
+									hideConversionTable={this.hideConversionTable.bind(this)}
 
-									<div className="input-group">
-										<div className="label">Kalimat yang dimasukkan</div>
-										<div className="textbox">
-											{this.state.inputText}
-										</div>
-									</div>
-
-									<div className="input-group">
-										<div className="label">Hasil (Geser { Number(this.state.shift) }{ this.state.doDecryption ? " dekripsi" : ""})</div>
-										<div className="textbox">
-											{this.state.convertedText}
-										</div>
-									</div>
-
-									<div className="flex-centre">
-										<button className="btn-convert"
-											onClick={this.backToStart.bind(this)}>
-											Konversi lagi
-									</button>
-									</div>
-								</>
+									shiftedTextArray={this.getShiftedTextArray(this.state.inputText)}
+								/>
 								:
-								<>
-									<div className="drag-handler"
-										onClick={this.toggleShowPanda} />
+								this.state.isConversionResultVisible ?
+									<ConversionResult
+										toggleShowPanda={this.toggleShowPanda}
+										backToStart={this.backToStart.bind(this)}
+										showConversionTable={this.showConversionTable.bind(this)}
 
-									<div className="input-group">
-										<label htmlFor="input">Kalimat yang ingin diacak</label>
-										<textarea
-											id="input"
-											placeholder="Masukkan teks"
-											value={this.state.inputText}
-											onChange={this.handleTextareaChange}></textarea>
-									</div>
+										{...this.state}
 
-									<div className="input-group">
-										<div>
-											<div>
-												<label htmlFor="shift">Geser Huruf</label>
-											</div>
+										shift={Number(this.state.shift)}
+										convertedText={this.getShiftedText(this.state.inputText, Number(this.state.shift))}
+									/>
+									:
+									<ConversionStart
+										toggleShowPanda={this.toggleShowPanda}
+										handleTextareaChange={this.handleTextareaChange.bind(this)}
+										handleDecryptionChange={this.handleDecryptionChange.bind(this)}
+										handleShiftChange={this.handleShiftChange.bind(this)}
+										convertText={this.convertText.bind(this)}
 
-											<div className="right-group">
-												<input id="decryption"
-														type="checkbox"
-														defaultChecked={this.state.doDecryption}
-														onChange={this.handleDecryptionChange}
-													/>
-												<label htmlFor="decryption">
-													Dekripsi
-												</label>
-											</div>
-										</div>
-										<input type="number"
-											id="shift"
-											value={this.state.shift}
-											onChange={this.handleShiftChange}
-											pattern="\d+"
-											min="0"
-											max="25" />
-									</div>
-
-									<div className="flex-centre">
-										<button className="btn-convert"
-											onClick={this.convertText.bind(this)}>
-											Konversi
-										</button>
-									</div>
-								</>
+										{...this.state}
+									/>
 						}
 					</div>
 
-
-					<div className={
-						"footer" +
-						(this.state.blurBody ? " blurred" : "") +
-						(this.state.isPandaVisible ? " hidden" : "")
-					}>
-						Graphics Design: T3CH_Kitsu<br />
-						Programming: Hevanafa<br />
-						Panda by Hevanafa<br />
-						May 2021, T3CH_Kitsu &amp; Hevanafa
-					</div>
+					<Footer {...this.state} />
 
 					<HowToUseModal
 						hideHowToUse={this.hideHowToUse}

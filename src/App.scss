@@ -23,6 +23,12 @@ body, button, textarea {
 
 button {
 	font-weight: bold;
+
+	// transition: 0.2s;
+
+	// &:active {
+	// 	transform: scale(0.9);
+	// }
 }
 
 input {
@@ -43,11 +49,12 @@ h1, p {
 	background: #505845;
 }
 
-.header, .body {
+.start-page > .header,
+.start-page > .body {
 	box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
 }
 
-.header {
+.start-page > .header {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -210,6 +217,10 @@ input {
 		justify-content: center;
 	}
 
+	.small-v-padding {
+		padding: 1vh 0;
+	}
+
 	.btn-convert {
 		background: $theme-colour;
 		border-radius: 20px;
@@ -326,7 +337,49 @@ input {
 	}
 }
 
-.header.dark-mode {
+.shift-grid {
+	border: 4px solid $theme-colour;
+	border-radius: 2vh;
+	box-sizing: border-box;
+
+	width: 100%;
+
+	.header {
+		background: $theme-colour;
+		color: white;
+		font-weight: bold;
+	}
+
+	.header > div:first-child,
+	.scrollable-body > div > div:first-child {
+		border-right: 4px solid $theme-colour;
+	}
+
+	.header > div,
+	.scrollable-body > div > div {
+		padding: 1vh 0;
+	}
+
+	.header,
+	.scrollable-body > div {
+		display: grid;
+		grid-template-columns: 1fr 5fr;
+		text-align: center;
+	}
+
+	.scrollable-body {
+		overflow-y: scroll;
+		height: 40vh;
+	}
+
+	.scrollable-body > div > div:last-child {
+		text-align: left;
+		padding: 1vh 2vw;
+	}
+
+}
+
+.start-page > .header.dark-mode {
 	background: #7eb851;
 	color: black;
 }
