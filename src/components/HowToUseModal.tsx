@@ -48,15 +48,15 @@ export default class HowToUseModal extends React.Component<IProps> {
 
 						<p>
 							<strong>Format input:</strong><br />
-							Input teks: teks biasa (string)<br />
-							Geser: bilangan (-25 sampai 25, inklusif)
+							Input: teks biasa (string)<br />
+							Geser: bilangan (0 sampai 25, inklusif)
 						</p>
 
 						<p>
-							Geser (bilangan positif):<br />
-							geser huruf dari <code>a</code> ke <code>z</code><br />
-							Geser (bilangan negatif):<br />
-							geser huruf dari <code>z</code> ke <code>a</code>
+							Geser (mode normal/enkripsi):<br />
+							Geser huruf dari <code>a</code> ke <code>z</code><br />
+							Geser (mode dekripsi):<br />
+							Kebalikan dari mode normal.
 						</p>
 
 						<p>
