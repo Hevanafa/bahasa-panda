@@ -350,31 +350,34 @@ input {
 		font-weight: bold;
 	}
 
-	.header > div:first-child,
-	.scrollable-body > div > div:first-child {
-		border-right: 4px solid $theme-colour;
-	}
-
-	.header > div,
-	.scrollable-body > div > div {
-		padding: 1vh 0;
-	}
-
 	.header,
 	.scrollable-body > div {
 		display: grid;
 		grid-template-columns: 1fr 5fr;
 		text-align: center;
+
+		& > div {
+			padding: 1vh 0;
+
+			&:first-child {
+				border-right: 4px solid $theme-colour;
+			}
+		}
 	}
 
 	.scrollable-body {
 		overflow-y: scroll;
 		height: 40vh;
-	}
 
-	.scrollable-body > div > div:last-child {
-		text-align: left;
-		padding: 1vh 2vw;
+		& > div:nth-child(even) {
+			// Theme colour with 0.2 alpha
+			background: rgba(126, 184, 81, 0.2);
+		}
+
+		& > div > div:last-child {
+			text-align: left;
+			padding: 1vh 2vw;
+		}
 	}
 
 }
