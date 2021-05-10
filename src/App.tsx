@@ -282,7 +282,7 @@ export default class App extends React.Component<{}, IState> {
 										{...this.state}
 
 										shift={Number(this.state.shift)}
-										convertedText={this.getShiftedText(this.state.inputText, Number(this.state.shift))}
+										convertedText={this.state.convertedText}
 									/>
 									:
 									<ConversionStart
