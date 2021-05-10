@@ -387,10 +387,16 @@ input {
 	color: black;
 }
 
-.body.dark-mode {
+.body.dark-mode,
+.how-to-use-modal.dark-mode {
 	background: #202020;
 
-	input, textarea, .textbox {
+	input, textarea, .textbox, code {
 		background: black;
+	}
+
+	code {
+		box-sizing: border-box;
+		border: 1px solid $theme-colour;
 	}
 }

@@ -301,7 +301,7 @@ export default class App extends React.Component<{}, IState> {
 
 					<HowToUseModal
 						hideHowToUse={this.hideHowToUse}
-						showHowToUse={this.state.showHowToUse} />
+						{...this.state} />
 
 				</div>
 			</div>

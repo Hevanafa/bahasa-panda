@@ -3,19 +3,29 @@ import React from "react";
 interface IProps {
 	hideHowToUse: () => void;
 	showHowToUse: boolean;
+	isDarkMode: boolean;
 }
 
 export default class HowToUseModal extends React.Component<IProps> {
 	render() {
+		const {
+			hideHowToUse,
+			showHowToUse,
+			isDarkMode
+		} = this.props;
+
 		return (
 			<>
 				{
 					this.props.showHowToUse ?
-					<div className="how-to-use-overlay"
-						onClick={this.props.hideHowToUse} /> : null
+						<div className="how-to-use-overlay" onClick={hideHowToUse} /> : null
 				}
 
-				<div className={"how-to-use-modal" + (this.props.showHowToUse ? " visible" : "")}>
+				<div className={
+					"how-to-use-modal" +
+					(showHowToUse ? " visible" : "") +
+					(isDarkMode ? " dark-mode" : "")
+				}>
 					<h1>Cara Menggunakan Aplikasi</h1>
 					<div className="textbox">
 						<p>
