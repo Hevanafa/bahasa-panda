@@ -4,6 +4,14 @@ $theme-colour: #7eb851;
 $body-blur-time: 0.2s;
 $how-to-use-time: 0.4s;
 
+body {
+	margin: 0;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
 @font-face {
 	font-family: $theme-font;
 	src: url(./assets/fonts/gotham-rounded/gotham-rounded-light.otf);
@@ -15,7 +23,9 @@ $how-to-use-time: 0.4s;
 	font-weight: bold;
 }
 
-body, button, textarea {
+body,
+button,
+textarea {
 	font-family: $theme-font;
 	user-select: none;
 	outline: none;
@@ -35,7 +45,8 @@ input {
 	outline: none;
 }
 
-h1, p {
+h1,
+p {
 	margin: 0;
 	padding: 0;
 }
@@ -58,7 +69,7 @@ h1, p {
 	position: fixed;
 	top: 0;
 	left: 0;
-	
+
 	z-index: 1;
 
 	height: 10vh;
@@ -98,7 +109,9 @@ textarea {
 	font-family: $theme-font;
 }
 
-textarea, input, .textbox {
+textarea,
+input,
+.textbox {
 	border: 6px solid $theme-colour;
 	color: $theme-colour;
 	border-radius: 20px;
@@ -111,7 +124,8 @@ textarea, input, .textbox {
 	background: white;
 }
 
-label, .label {
+label,
+.label {
 	font-weight: bold;
 	display: block;
 	margin: 1vh 0;
@@ -193,7 +207,7 @@ input {
 			}
 		}
 	}
-	
+
 	.drag-handler {
 		position: relative;
 		display: flex;
@@ -289,7 +303,7 @@ input {
 
 	width: 100vw;
 	height: 100vh;
-	background: rgba(0,0,0,0.1);
+	background: rgba(0, 0, 0, 0.1);
 }
 
 .how-to-use-modal {
@@ -379,7 +393,6 @@ input {
 			padding: 1vh 2vw;
 		}
 	}
-
 }
 
 .start-page > .header.dark-mode {
@@ -391,7 +404,10 @@ input {
 .how-to-use-modal.dark-mode {
 	background: #202020;
 
-	input, textarea, .textbox, code {
+	input,
+	textarea,
+	.textbox,
+	code {
 		background: black;
 	}
 
